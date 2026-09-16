@@ -33,6 +33,18 @@ class Grid:
                 cell = Cell((w, h))
                 cells.append(cell)
 
-        cells_as_tuple = tuple(cells)
+        return cells
 
-        return cells_as_tuple
+    def get_walkable_neighbors(self, current_cell):
+        """Returns a tuple of walkable neighbors of current cell."""
+        w, h = current_cell.position
+        positions = [(w+1, h), (w-1, h), (w, h-1), (w, h+1)]
+        neighbor_cells = []
+        for cell in self.cells:
+            if cell.position in positions:
+                neighbor_cells.append(cell)
+
+        walkable_neighbors = [neighbor_cell for neighbor_cell in neighbor_cells if not neighbor_cell.is_wall]
+
+        return walkable_neighbors
+
