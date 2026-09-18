@@ -19,9 +19,13 @@ class Grid:
         cells (tuple): A tuple of Cell objects.
         def get_walkable_neighbors: get walkable neighbors of current cell.
     """
-    def __init__(self, width_height: tuple=(25, 25)):
+    def __init__(self, width_height: tuple=(25, 25), start_position: tuple=(1, 1), end_position: tuple=(24, 24)):
         self.width_height = width_height
         self.cells = self.get_cells(width_height)
+        self.start_position = start_position
+        self.end_position = end_position
+        self.start_cell = self.get_cell_at_position(start_position)
+        self.end_cell = self.get_cell_at_position(end_position)
 
 
     def get_cells(self, width_height):
@@ -47,4 +51,19 @@ class Grid:
         walkable_neighbors = [neighbor_cell for neighbor_cell in neighbor_cells if not neighbor_cell.is_wall]
 
         return walkable_neighbors
+
+
+    def get_cell_at_position(self, position: tuple):
+        """Returns a cell."""
+        for cell in self.cells:
+            if cell.position == position:
+                break
+        else:
+            return None
+
+        return cell
+
+
+
+
 
