@@ -1,4 +1,5 @@
 from grid import Grid, Cell
+from collections import deque
 
 def BFS_algorithm(grid):
     """Finds the shortest path from the grid's start cell to its end cell using
@@ -17,13 +18,13 @@ def BFS_algorithm(grid):
             cell, representing the shortest path found.
     """
     visited = []
-    queue = []
+    queue = deque()
     came_from = {}
 
     queue.append(grid.start_cell)
 
     while queue:
-        current_cell = queue.pop(0)
+        current_cell = queue.popleft()
         if current_cell == grid.end_cell:
             break
         else:
@@ -62,7 +63,7 @@ def DFS_algorithm(grid):
             cell, representing the path found (not guaranteed to be shortest).
     """
     visited = []
-    stack = []
+    stack = deque()
     came_from = {}
 
     stack.append(grid.start_cell)
