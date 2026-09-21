@@ -12,6 +12,9 @@ class Cell:
         self.is_wall = is_wall
         self.weight = weight
 
+    def __lt__(self, other):
+        return self.position < other.position
+
 class Grid:
     """Represents a grid of cells.
     Attributes:

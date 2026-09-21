@@ -1,5 +1,6 @@
 from grid import Grid, Cell
 from collections import deque
+import heapq
 
 def BFS_algorithm(grid):
     """Finds the shortest path from the grid's start cell to its end cell using
@@ -89,3 +90,61 @@ def DFS_algorithm(grid):
             break
 
     return list(reversed(path))
+
+def Dijkstra_algorithm(grid):
+    """Finds the cheapest path from the grid's start cell to its end cell
+    using Dijkstra's algorithm.
+
+    Explores the grid using a priority queue, always processing the
+    cell with the lowest known total cost so far. Unlike BFS, this
+    accounts for each cell's weight, guaranteeing that the first time
+    the end cell is reached, it has been reached via the cheapest
+    possible path (lowest total cost), even if that path takes more
+    steps than a shorter, more expensive alternative.
+
+    Args:
+        grid (Grid): The grid to search, providing the start cell, end cell,
+            and walkable neighbor lookups.
+
+    Returns:
+        list: A list of Cell objects in order from the start cell to the end
+            cell, representing the cheapest path found.
+    """
+
+    costs = {}
+    visited = []
+    heap = []
+
+    came_from = {}
+
+    costs[grid.start_cell] = grid.start_cell.weight
+
+    heapq.heappush(heap,(costs[grid.start_cell],grid.start_cell))
+
+    while heap:
+        cost, current_cell = heapq.heappop(heap)
+
+        if current_cell == grid.end_cell:
+            break
+        elif cost > costs[current_cell]:
+            continue
+        else:
+            neighbors = grid.get_walkable_neighbors(current_cell=current_cell)
+            for neighbor in neighbors:
+                new_cost = costs[current_cell] + neighbor.weight
+                if neighbor not in costs or new_cost < costs[neighbor]:
+                    costs[neighbor] = new_cost
+                    came_from[neighbor] = current_cell
+                    heapq.heappush(heap, (costs[neighbor], neighbor))
+
+    path = [grid.end_cell]
+    for cell in path:
+        previous_cell = came_from[cell]
+        path.append(previous_cell)
+        if previous_cell == grid.start_cell:
+            break
+
+    return list(reversed(path))
+
+
+
