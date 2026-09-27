@@ -145,7 +145,7 @@ def Dijkstra_algorithm(grid):
 
     return list(reversed(path))
 
-def A_star_algorithm(grid):
+def A_Star_algorithm(grid):
     """Finds the cheapest path from the grid's start cell to its end cell
     using the A* algorithm.
 
@@ -203,4 +203,56 @@ def A_star_algorithm(grid):
 
     return list(reversed(path))
 
+def Greedy_Best_First_Search_algorithm(grid):
+    """Finds a path from the grid's start cell to its end cell using
+    Greedy Best-First Search.
 
+    Explores the grid using a priority queue ordered purely by a heuristic
+    estimate (Manhattan distance) to the goal, completely ignoring the real
+    accumulated cost of getting there. This tends to move quickly toward the
+    goal, but unlike Dijkstra and A*, offers no guarantee of finding the
+    cheapest path, since it can be lured into expensive routes that merely
+    look close to the goal.
+
+    Args:
+        grid (Grid): The grid to search, providing the start cell, end cell,
+            and walkable neighbor lookups.
+
+    Returns:
+        list: A list of Cell objects in order from the start cell to the end
+            cell, representing the path found (not guaranteed to be cheapest).
+    """
+
+    visited = [grid.start_cell]
+    heap = []
+
+    came_from = {}
+
+    w_end_cell, h_end_cell = grid.end_cell.position
+    w_start_cell, h_start_cell = grid.start_cell.position
+    start_heuristic = abs(w_end_cell - w_start_cell) + abs(h_end_cell - h_start_cell)
+    heapq.heappush(heap, (start_heuristic, grid.start_cell))
+
+    while heap:
+        heuristic, current_cell = heapq.heappop(heap)
+
+        if current_cell == grid.end_cell:
+            break
+        else:
+            neighbors = grid.get_walkable_neighbors(current_cell=current_cell)
+            for neighbor in neighbors:
+                neighbor_w, neighbor_h = neighbor.position
+                neighbor_heuristic = abs(w_end_cell - neighbor_w) + abs(h_end_cell - neighbor_h)
+                if (neighbor not in visited) and (neighbor not in heap) :
+                    came_from[neighbor] = current_cell
+                    heapq.heappush(heap, (neighbor_heuristic, neighbor))
+            visited.append(current_cell)
+
+    path = [grid.end_cell]
+    for cell in path:
+        previous_cell = came_from[cell]
+        path.append(previous_cell)
+        if previous_cell == grid.start_cell:
+            break
+
+    return list(reversed(path))
