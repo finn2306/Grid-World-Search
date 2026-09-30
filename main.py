@@ -16,9 +16,30 @@ path = None
 while running:
 
     for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_5:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            generator = None
+            explored_cells.clear()
+            path = None
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
             explored_cells.clear()
             generator = BFS_algorithm(grid)
+            path = None
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+            explored_cells.clear()
+            generator = DFS_algorithm(grid)
+            path = None
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_3:
+            explored_cells.clear()
+            generator = Dijkstra_algorithm(grid)
+            path = None
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_4:
+            explored_cells.clear()
+            generator = A_Star_algorithm(grid)
+            path = None
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_5:
+            explored_cells.clear()
+            generator = Greedy_Best_First_Search_algorithm(grid)
+            path = None
         if event.type == pygame.QUIT:
             running = False
 

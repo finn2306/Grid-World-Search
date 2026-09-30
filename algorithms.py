@@ -72,6 +72,7 @@ def DFS_algorithm(grid):
 
     while stack:
         current_cell = stack.pop()
+        yield current_cell
         if current_cell == grid.end_cell:
             break
         else:
@@ -125,10 +126,12 @@ def Dijkstra_algorithm(grid):
         cost, current_cell = heapq.heappop(heap)
 
         if current_cell == grid.end_cell:
+            yield current_cell
             break
         elif cost > costs[current_cell]:
             continue
         else:
+            yield current_cell
             neighbors = grid.get_walkable_neighbors(current_cell=current_cell)
             for neighbor in neighbors:
                 new_cost = costs[current_cell] + neighbor.weight
@@ -175,16 +178,17 @@ def A_Star_algorithm(grid):
     heapq.heappush(heap,(costs[grid.start_cell],grid.start_cell))
     w_end_cell, h_end_cell = grid.end_cell.position
 
-
     while heap:
         cost, current_cell = heapq.heappop(heap)
         w, h = current_cell.position
         heuristic = abs((w_end_cell - w)) + abs((h_end_cell - h))
         if current_cell == grid.end_cell:
+            yield current_cell
             break
         elif (cost - heuristic) > costs[current_cell]:
             continue
         else:
+            yield current_cell
             neighbors = grid.get_walkable_neighbors(current_cell=current_cell)
             for neighbor in neighbors:
                 neighbor_w, neighbor_h = neighbor.position
@@ -236,6 +240,7 @@ def Greedy_Best_First_Search_algorithm(grid):
 
     while heap:
         heuristic, current_cell = heapq.heappop(heap)
+        yield current_cell
 
         if current_cell == grid.end_cell:
             break
