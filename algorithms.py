@@ -26,6 +26,7 @@ def BFS_algorithm(grid):
 
     while queue:
         current_cell = queue.popleft()
+        yield current_cell
         if current_cell == grid.end_cell:
             break
         else:
